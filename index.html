@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Présentation des équipes</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" rel="stylesheet">
+  <style>
+    .container {
+      margin-top: 30px;
+    }
+    .section-title {
+      margin-top: 50px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h4 class="center-align">Présentation de l'équipe de recherche</h4>
+
+    <div class="row">
+      <div class="input-field col s6">
+        <input type="text" id="nom_equipe">
+        <label for="nom_equipe">Nom de l'équipe</label>
+      </div>
+      <div class="input-field col s6">
+        <input type="text" id="prenom_equipe">
+        <label for="prenom_equipe">Prénom du chef d'équipe</label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="input-field col s4">
+        <input type="text" id="cin">
+        <label for="cin">CIN</label>
+      </div>
+      <div class="input-field col s4">
+        <input type="text" id="etablissement">
+        <label for="etablissement">Établissement</label>
+      </div>
+      <div class="input-field col s4">
+        <input type="text" id="universite">
+        <label for="universite">Université</label>
+      </div>
+    </div>
+
+    <div class="row">
+      <div class="input-field col s6">
+        <input type="text" id="code_ur">
+        <label for="code_ur">Code UR d'origine</label>
+      </div>
+    </div>
+
+    <h6 class="section-title">Membres de l'équipe</h6>
+    <div id="membres"></div>
+    <a class="btn waves-effect waves-light" onclick="ajouterMembre('membres')">Ajouter un membre</a>
+
+    <h6 class="section-title">Doctorants & Mastère</h6>
+    <div id="doctorants"></div>
+    <a class="btn waves-effect waves-light" onclick="ajouterDoctorant()">Ajouter</a>
+
+    <h6 class="section-title">Cadres techniques</h6>
+    <div id="cadres"></div>
+    <a class="btn waves-effect waves-light" onclick="ajouterCadre()">Ajouter</a>
+
+    <h6 class="section-title">Activités de recherche</h6>
+    <div class="input-field">
+      <textarea class="materialize-textarea" id="activites" data-length="1000"></textarea>
+      <label for="activites">Paragraphe de 10 lignes max</label>
+    </div>
+
+    <h6 class="section-title">Mots-clés</h6>
+    <div class="input-field">
+      <input type="text" id="mots_cles">
+      <label for="mots_cles">4 mots-clés séparés par des virgules</label>
+    </div>
+
+    <h6 class="section-title">Publications significatives les plus récentes de l’équipe de recherche</h6>
+    <div id="publications"></div>
+    <a class="btn waves-effect waves-light" onclick="ajouterPublication()">Ajouter</a>
+
+    <h6 class="section-title">Liste des collaborations scientifiques établies et/ou à établir avec des structures de recherche et organismes étrangers </h6>
+    <div id="collab_etranger"></div>
+    <a class="btn waves-effect waves-light" onclick="ajouterCollab('collab_etranger')">Ajouter</a>
+
+    <h6 class="section-title">Liste des collaborations scientifiques formalisées et régulières établies avec des structures de recherche et organismes nationaux</h6>
+    <div id="collab_national"></div>
+    <a class="btn waves-effect waves-light" onclick="ajouterCollab('collab_national')">Ajouter</a>
+
+    <h6 class="section-title">Liste des collaborations établies et/ou à établir avec des partenaires socio-économiques nationaux et étrangers</h6>
+    <div id="collab_socio"></div>
+    <a class="btn waves-effect waves-light" onclick="ajouterCollab('collab_socio')">Ajouter</a>
+  </div>
+
+  <script>
+    let pubCount = 0;
+    function ajouterMembre(divId) {
+      const div = document.getElementById(divId);
+      const html = `<div class="row">
+        <div class="input-field col s2"><input type="text" placeholder="Grade"></div>
+        <div class="input-field col s3"><input type="text" placeholder="Nom et prénom"></div>
+        <div class="input-field col s2"><input type="text" placeholder="CIN"></div>
+        <div class="input-field col s3"><input type="text" placeholder="Établissement"></div>
+        <div class="input-field col s2"><input type="text" placeholder="Université"></div>
+      </div>`;
+      div.insertAdjacentHTML('beforeend', html);
+    }
+
+    function ajouterDoctorant() {
+      const div = document.getElementById('doctorants');
+      const html = `<div class="row">
+        <div class="input-field col s2"><input type="text" placeholder="Nom"></div>
+        <div class="input-field col s2"><input type="text" placeholder="CIN"></div>
+        <div class="input-field col s2"><input type="text" placeholder="Établissement"></div>
+        <div class="input-field col s2"><input type="text" placeholder="Année 1ère inscription"></div>
+        <div class="input-field col s2"><input type="text" placeholder="Nom encadreur"></div>
+        <div class="input-field col s2"><input type="text" placeholder="Cotutelle/Univ"></div>
+      </div>`;
+      div.insertAdjacentHTML('beforeend', html);
+    }
+
+    function ajouterCadre() {
+      const div = document.getElementById('cadres');
+      const html = `<div class="row">
+        <div class="input-field col s3"><input type="text" placeholder="Nom et prénom"></div>
+        <div class="input-field col s3"><input type="text" placeholder="CIN"></div>
+        <div class="input-field col s3"><input type="text" placeholder="Qualité"></div>
+        <div class="input-field col s3"><input type="text" placeholder="Établissement"></div>
+      </div>`;
+      div.insertAdjacentHTML('beforeend', html);
+    }
+
+    function ajouterPublication() {
+      pubCount++;
+      const div = document.getElementById('publications');
+      const html = `<div class="input-field"><input type="text" placeholder="${pubCount}- Publication"></div>`;
+      div.insertAdjacentHTML('beforeend', html);
+    }
+
+    function ajouterCollab(divId) {
+      const div = document.getElementById(divId);
+      const html = `<div class="input-field"><input type="text" placeholder="Structure de recherche ou organisme"></div>`;
+      div.insertAdjacentHTML('beforeend', html);
+    }
+  </script>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</body>
+</html>
