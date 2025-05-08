@@ -52,13 +52,21 @@
       </div>
     </div>
 
-    <h6 class="section-title">Membres de l'équipe</h6>
-    <div id="membres"></div>
-    <a class="btn waves-effect waves-light" onclick="ajouterMembre('membres')">Ajouter un membre</a>
+    <h6 class="section-title">Maîtres assistants</h6>
+    <div id="maitres"></div>
+    <a class="btn waves-effect waves-light" onclick="ajouterMaitre()">Ajouter un maître assistant</a>
 
-    <h6 class="section-title">Doctorants & Mastère</h6>
+    <h6 class="section-title">Assistants</h6>
+    <div id="assistants"></div>
+    <a class="btn waves-effect waves-light" onclick="ajouterAssistant()">Ajouter un assistant</a>
+
+    <h6 class="section-title">Doctorants</h6>
     <div id="doctorants"></div>
-    <a class="btn waves-effect waves-light" onclick="ajouterDoctorant()">Ajouter</a>
+    <a class="btn waves-effect waves-light" onclick="ajouterDoctorant()">Ajouter un doctorant</a>
+
+    <h6 class="section-title">Étudiants en mastère de recherche</h6>
+    <div id="masteres"></div>
+    <a class="btn waves-effect waves-light" onclick="ajouterMastere()">Ajouter un étudiant</a>
 
     <h6 class="section-title">Cadres techniques</h6>
     <div id="cadres"></div>
@@ -91,12 +99,47 @@
     <h6 class="section-title">Liste des collaborations établies et/ou à établir avec des partenaires socio-économiques nationaux et étrangers</h6>
     <div id="collab_socio"></div>
     <a class="btn waves-effect waves-light" onclick="ajouterCollab('collab_socio')">Ajouter</a>
+  <h6 class="section-title">Notre laboratoire sera nommé LARITED (Laboratoire de Recherche Interdisciplinaire des TEchnologies de Demain)</h6>
+<div class="row">
+  <p>
+    <label>
+      <input name="larited" type="radio" value="Oui" />
+      <span>Oui</span>
+    </label>
+  </p>
+  <p>
+    <label>
+      <input name="larited" type="radio" value="Non" />
+      <span>Non</span>
+    </label>
+  </p>
+  <p>
+    <label>
+  <div class="input-field col s6">
+    <input type="text" id="larited_autre" placeholder="Si autre, précisez ici">
   </div>
+</div>
 
-  <script>
+<div class="center-align" style="margin-top: 40px;">
+      <button class="btn waves-effect waves-light" type="submit">Soumettre</button>
+    </div>
+
+    <script>
     let pubCount = 0;
-    function ajouterMembre(divId) {
-      const div = document.getElementById(divId);
+    function ajouterMaitre() {
+      const div = document.getElementById('maitres');
+      const html = `<div class="row">
+        <div class="input-field col s2"><input type="text" placeholder="Grade"></div>
+        <div class="input-field col s3"><input type="text" placeholder="Nom et prénom"></div>
+        <div class="input-field col s2"><input type="text" placeholder="CIN"></div>
+        <div class="input-field col s3"><input type="text" placeholder="Établissement"></div>
+        <div class="input-field col s2"><input type="text" placeholder="Université"></div>
+      </div>`;
+      div.insertAdjacentHTML('beforeend', html);
+    }
+
+    function ajouterAssistant() {
+      const div = document.getElementById('assistants');
       const html = `<div class="row">
         <div class="input-field col s2"><input type="text" placeholder="Grade"></div>
         <div class="input-field col s3"><input type="text" placeholder="Nom et prénom"></div>
@@ -112,10 +155,23 @@
       const html = `<div class="row">
         <div class="input-field col s2"><input type="text" placeholder="Nom"></div>
         <div class="input-field col s2"><input type="text" placeholder="CIN"></div>
-        <div class="input-field col s2"><input type="text" placeholder="Établissement"></div>
+        <div class="input-field col s2"><input type="text" placeholder="Établissement / Université"></div>
         <div class="input-field col s2"><input type="text" placeholder="Année 1ère inscription"></div>
         <div class="input-field col s2"><input type="text" placeholder="Nom encadreur"></div>
-        <div class="input-field col s2"><input type="text" placeholder="Cotutelle/Univ"></div>
+        <div class="input-field col s2"><input type="text" placeholder="Cotutelle / Univ"></div>
+      </div>`;
+      div.insertAdjacentHTML('beforeend', html);
+    }
+
+    function ajouterMastere() {
+      const div = document.getElementById('masteres');
+      const html = `<div class="row">
+        <div class="input-field col s2"><input type="text" placeholder="Nom"></div>
+        <div class="input-field col s2"><input type="text" placeholder="CIN"></div>
+        <div class="input-field col s2"><input type="text" placeholder="Établissement / Université"></div>
+        <div class="input-field col s2"><input type="text" placeholder="Année 1ère inscription"></div>
+        <div class="input-field col s2"><input type="text" placeholder="Nom encadreur"></div>
+        <div class="input-field col s2"><input type="text" placeholder="Cotutelle / Univ"></div>
       </div>`;
       div.insertAdjacentHTML('beforeend', html);
     }
@@ -144,7 +200,57 @@
       div.insertAdjacentHTML('beforeend', html);
     }
   </script>
-
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script>
+document.querySelector('button[type="submit"]').addEventListener('click', function (e) {
+  e.preventDefault();
+
+  const getSectionData = (id) => {
+    return Array.from(document.querySelectorAll(`#${id} .row`)).map(row =>
+      Array.from(row.querySelectorAll('input')).map(input => input.value.trim())
+    );
+  };
+
+  const getSimpleInputs = (id) => {
+    return Array.from(document.querySelectorAll(`#${id} input`)).map(input => input.value.trim());
+  };
+
+  const data = {
+    nom_equipe: document.getElementById("nom_equipe").value.trim(),
+    prenom_equipe: document.getElementById("prenom_equipe").value.trim(),
+    cin: document.getElementById("cin").value.trim(),
+    etablissement: document.getElementById("etablissement").value.trim(),
+    universite: document.getElementById("universite").value.trim(),
+    code_ur: document.getElementById("code_ur").value.trim(),
+    activites: document.getElementById("activites").value.trim(),
+    mots_cles: document.getElementById("mots_cles").value.trim(),
+    maitres: getSectionData("maitres"),
+    assistants: getSectionData("assistants"),
+    doctorants: getSectionData("doctorants"),
+    masteres: getSectionData("masteres"),
+    cadres: getSectionData("cadres"),
+    publications: getSimpleInputs("publications"),
+    collab_etranger: getSimpleInputs("collab_etranger"),
+    collab_national: getSimpleInputs("collab_national"),
+    collab_socio: getSimpleInputs("collab_socio"),
+    larited: document.querySelector('input[name="larited"]:checked')?.value || "",
+    larited_autre: document.getElementById("larited_autre")?.value.trim() || ""
+  };
+
+  fetch("https://script.google.com/macros/s/AKfycbyUfbn6qzuHcbbCuCuHzWF86RaekF3GPj38iMBRci0Oq-VG5ghzjVQ9BE5kjWN6UX76/exec", {
+    method: "POST",
+    body: JSON.stringify(data),
+    headers: { "Content-Type": "application/json" }
+  })
+  .then(res => res.text())
+  .then(text => {
+    M.toast({ html: "Formulaire envoyé avec succès !" });
+  })
+  .catch(err => {
+    console.error(err);
+    M.toast({ html: "Erreur lors de l'envoi." });
+  });
+});
+</script>
 </body>
 </html>
