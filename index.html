@@ -201,57 +201,69 @@
     }
   </script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-<script>
-document.querySelector('button[type="submit"]').addEventListener('click', function (e) {
-  e.preventDefault();
-
-  const getSectionData = (id) => {
-    return Array.from(document.querySelectorAll(`#${id} .row`)).map(row =>
-      Array.from(row.querySelectorAll('input')).map(input => input.value.trim())
-    );
-  };
-
-  const getSimpleInputs = (id) => {
-    return Array.from(document.querySelectorAll(`#${id} input`)).map(input => input.value.trim());
-  };
-
-  const data = {
-    nom_equipe: document.getElementById("nom_equipe").value.trim(),
-    prenom_equipe: document.getElementById("prenom_equipe").value.trim(),
-    cin: document.getElementById("cin").value.trim(),
-    etablissement: document.getElementById("etablissement").value.trim(),
-    universite: document.getElementById("universite").value.trim(),
-    code_ur: document.getElementById("code_ur").value.trim(),
-    activites: document.getElementById("activites").value.trim(),
-    mots_cles: document.getElementById("mots_cles").value.trim(),
-    maitres: getSectionData("maitres"),
-    assistants: getSectionData("assistants"),
-    doctorants: getSectionData("doctorants"),
-    masteres: getSectionData("masteres"),
-    cadres: getSectionData("cadres"),
-    publications: getSimpleInputs("publications"),
-    collab_etranger: getSimpleInputs("collab_etranger"),
-    collab_national: getSimpleInputs("collab_national"),
-    collab_socio: getSimpleInputs("collab_socio"),
-    larited: document.querySelector('input[name="larited"]:checked')?.value || "",
-    larited_autre: document.getElementById("larited_autre")?.value.trim() || ""
-  };
-
-  fetch("https://script.google.com/macros/s/AKfycbxfEI9i22qn_XSiSY3wj1AcwVnXZXV26pwzMjUbqIn2QJUfHEzXXwz_skqddc7Q19yW/exec", {
-  method: "POST",
-  body: JSON.stringify(data),
-  headers: { "Content-Type": "application/json" }
-})
-.then(res => res.json())
-.then(response => {
-  if (response.success) {
-    M.toast({ html: "Formulaire envoyé avec succès !" });
-    // Optional: Reset form here
-  } else {
-    M.toast({ html: "Erreur: " + response.error });
-  }
-});
-});
-</script>
+  <script>
+    document.querySelector('button[type="submit"]').addEventListener('click', function (e) {
+      e.preventDefault();
+    
+      const getSectionData = (id) => {
+        return Array.from(document.querySelectorAll(`#${id} .row`)).map(row =>
+          Array.from(row.querySelectorAll('input')).map(input => input.value.trim())
+        );
+      };
+    
+      const getSimpleInputs = (id) => {
+        return Array.from(document.querySelectorAll(`#${id} input`)).map(input => input.value.trim());
+      };
+    
+      // Get the 'larited' radio button value
+      const larited = document.querySelector('input[name="larited"]:checked') ? document.querySelector('input[name="larited"]:checked').value : '';
+    
+      // Get 'larited_autre' value
+      const laritedAutre = document.getElementById('larited_autre').value.trim();
+    
+      const data = {
+        nom_equipe: document.getElementById("nom_equipe").value.trim(),
+        prenom_equipe: document.getElementById("prenom_equipe").value.trim(),
+        cin: document.getElementById("cin").value.trim(),
+        etablissement: document.getElementById("etablissement").value.trim(),
+        universite: document.getElementById("universite").value.trim(),
+        code_ur: document.getElementById("code_ur").value.trim(),
+        activites: document.getElementById("activites").value.trim(),
+        mots_cles: document.getElementById("mots_cles").value.trim(),
+        maitres: getSectionData("maitres"),
+        assistants: getSectionData("assistants"),
+        doctorants: getSectionData("doctorants"),
+        masteres: getSectionData("masteres"),
+        cadres: getSectionData("cadres"),
+        publications: getSimpleInputs("publications"),
+        collab_etranger: getSimpleInputs("collab_etranger"),
+        collab_national: getSimpleInputs("collab_national"),
+        collab_socio: getSimpleInputs("collab_socio"),
+        larited: larited,            // Add the larited value
+        larited_autre: laritedAutre  // Add the larited_autre value
+      };
+    
+      // Send the data via POST request to Google Apps Script
+      fetch('https://script.google.com/macros/s/AKfycbwlb5caItXlN2yB0BuUc69dPLaFOLn5Ja-u7PWh2JFxrmpkQ4bkPnwzZxJ8V4dECDE/exec', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(response => response.json())
+      .then(responseData => {
+        if (responseData.success) {
+          alert('Form successfully submitted!');
+        } else {
+          alert('An error occurred: ' + responseData.error);
+        }
+      })
+      .catch(error => {
+        alert('An error occurred: ' + error.message);
+      });
+    });
+    </script>
+    
 </body>
 </html>
